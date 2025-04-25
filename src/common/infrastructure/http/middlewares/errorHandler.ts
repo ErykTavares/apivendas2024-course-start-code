@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 
 export function errorHandler(
     err: Error,
-    req: Request,
+    _req: Request,
     res: Response,
     _next: NextFunction,
 ): Response {
