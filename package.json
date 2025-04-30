@@ -5,7 +5,8 @@
     "scripts": {
         "dev": "npx dotenv-cli -e .env -- ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/common/infrastructure/http/server.ts",
         "lint": "eslint .",
-        "teste": "npx dotenv-cli -e .env.test -- jest --runInBand"
+        "teste": "npx dotenv-cli -e .env.test -- jest --runInBand",
+        "prettier": "npx prettier --config .prettierrc 'src//**/*.{js,jsx,ts,tsx,json}' --write"
     },
     "keywords": [],
     "author": "",
