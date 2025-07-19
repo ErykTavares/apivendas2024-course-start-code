@@ -11,6 +11,7 @@ export type SearchOutput<Model> = {
     per_page: number;
     total: number;
     current_page: number;
+    sort: string | null;
     sort_dir: string | null;
     filter: string | null;
 };

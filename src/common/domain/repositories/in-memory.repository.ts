@@ -53,8 +53,65 @@ export abstract class InMemoryRepository<Model extends ModelProps, CreateProps>
         this.items.splice(index, 1);
     }
 
-    search(props: SearchInput): Promise<SearchOutput<Model>> {
-        throw new Error('Method not implemented.');
+    protected abstract applyFilter(
+        items: Model[],
+        filter: string | null,
+    ): Promise<Model[]>;
+
+    protected async applySort(
+        itens: Model[],
+        sort: string | null,
+        sortDir: string | null,
+    ): Promise<Model[]> {
+        if (!sort || !this.sortableFields.includes(sort)) {
+            return itens;
+        }
+
+        const sortedItems = [...itens].sort((a, b) => {
+            if (a[sort] < b[sort]) return sortDir === 'desc' ? 1 : -1;
+            if (a[sort] > b[sort]) return sortDir === 'desc' ? -1 : 1;
+            return 0;
+        });
+
+        return sortedItems;
+    }
+
+    protected async applyPaginate(
+        items: Model[],
+        page: number,
+        perPage: number,
+    ): Promise<Model[]> {
+        const start = (page - 1) * perPage;
+        const limit = start + perPage;
+        return items.slice(start, limit);
+
+        return this.items;
+    }
+
+    async search(props: SearchInput): Promise<SearchOutput<Model>> {
+        const page = props.page ?? 1;
+        const per_page = props.per_page ?? 15;
+        const sort = props.sort ?? null;
+        const sort_dir = props.sort_dir ?? null;
+        const filter = props.filter ?? null;
+
+        const filteredItems = await this.applyFilter(this.items, filter);
+        const sortedItems = await this.applySort(filteredItems, sort, sort_dir);
+        const paginatedItems = await this.applyPaginate(
+            sortedItems,
+            page,
+            per_page,
+        );
+
+        return {
+            items: paginatedItems,
+            total: filteredItems.length,
+            current_page: page,
+            per_page,
+            sort,
+            sort_dir,
+            filter,
+        };
     }
 
     protected async _get(id: string): Promise<Model> {
