@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { NotFoundError } from '../errors/not-found-error';
 import {
     RepositoryInterface,
@@ -14,7 +15,7 @@ export type CreateProps = {
     [key: string]: any;
 };
 
-export abstract class InMemoryRepository<Model extends ModelProps, CreateProps>
+export abstract class InMemoryRepository<Model extends ModelProps>
     implements RepositoryInterface<Model, CreateProps>
 {
     items: Model[] = [];
@@ -22,7 +23,7 @@ export abstract class InMemoryRepository<Model extends ModelProps, CreateProps>
 
     create(props: CreateProps): Model {
         const model = {
-            id: crypto.randomUUID(),
+            id: randomUUID(),
             create_at: new Date(),
             update_at: new Date(),
             ...props,
