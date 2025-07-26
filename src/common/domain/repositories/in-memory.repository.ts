@@ -85,8 +85,6 @@ export abstract class InMemoryRepository<Model extends ModelProps>
         const start = (page - 1) * perPage;
         const limit = start + perPage;
         return items.slice(start, limit);
-
-        return this.items;
     }
 
     async search(props: SearchInput): Promise<SearchOutput<Model>> {
