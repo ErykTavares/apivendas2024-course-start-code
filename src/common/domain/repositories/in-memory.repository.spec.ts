@@ -436,5 +436,83 @@ describe('InMemoryRepository Unit Tests', () => {
                 filter: null,
             });
         });
+
+        it('search using filter, sort and pagination', async () => {
+            const items = [
+                {
+                    id: randomUUID(),
+                    name: 'TEST',
+                    price: 100,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'user',
+                    price: 200,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'test',
+                    price: 300,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'user01',
+                    price: 479,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'TeSt',
+                    price: 525,
+                    created_at,
+                    updated_at,
+                },
+            ];
+
+            sut.items = items;
+
+            let result = await sut.search({
+                page: 1,
+                per_page: 2,
+                sort: 'name',
+                sort_dir: 'asc',
+                filter: 'TEST',
+            });
+
+            expect(result).toStrictEqual({
+                items: [items[0], items[4]],
+                total: 3,
+                current_page: 1,
+                per_page: 2,
+                sort: 'name',
+                sort_dir: 'asc',
+                filter: 'TEST',
+            });
+
+            result = await sut.search({
+                page: 1,
+                per_page: 2,
+                sort: 'name',
+                sort_dir: 'desc',
+                filter: 'test',
+            });
+
+            expect(result).toStrictEqual({
+                items: [items[2], items[4]],
+                total: 3,
+                current_page: 1,
+                per_page: 2,
+                sort: 'name',
+                sort_dir: 'desc',
+                filter: 'test',
+            });
+        });
     });
 });
