@@ -19,7 +19,7 @@ export interface ProductsRepository
     extends RepositoryInterface<ProductModel, CreateProductProps> {
     findByName(name: string): Promise<ProductModel>;
 
-    findAllByIds(ids: ProductId[]): Promise<ProductModel[]>;
+    findAllByIds(productIds: ProductId[]): Promise<ProductModel[]>;
 
     conflictingNames(names: string): Promise<void>;
 }
