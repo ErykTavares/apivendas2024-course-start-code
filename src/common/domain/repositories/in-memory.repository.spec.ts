@@ -237,4 +237,204 @@ describe('InMemoryRepository Unit Tests', () => {
             expect(result).toStrictEqual([items[2], items[0], items[1]]);
         });
     });
+
+    describe('paginate', () => {
+        it('must paginate items', async () => {
+            const items = [
+                {
+                    id: randomUUID(),
+                    name: 'user01',
+                    price: 100,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'user02',
+                    price: 200,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'user03',
+                    price: 300,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'user04',
+                    price: 525,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'user05',
+                    price: 450,
+                    created_at,
+                    updated_at,
+                },
+            ];
+            let result = await sut['applyPaginate'](items, 1, 2);
+
+            expect(result).toStrictEqual([items[0], items[1]]);
+
+            result = await sut['applyPaginate'](items, 2, 2);
+
+            expect(result).toStrictEqual([items[2], items[3]]);
+
+            result = await sut['applyPaginate'](items, 2, 3);
+
+            expect(result).toStrictEqual([items[3], items[4]]);
+        });
+    });
+
+    describe('search', () => {
+        it('must paginate items in search', async () => {
+            const items = Array(16).fill(model);
+
+            sut.items = items;
+
+            let result = await sut.search({});
+
+            expect(result).toStrictEqual({
+                items: Array(15).fill(model),
+                total: 16,
+                current_page: 1,
+                per_page: 15,
+                sort: null,
+                sort_dir: null,
+                filter: null,
+            });
+        });
+
+        it('pagination and filtering must be apply', async () => {
+            const items = [
+                {
+                    id: randomUUID(),
+                    name: 'user01',
+                    price: 100,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'a',
+                    price: 200,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'USER01',
+                    price: 300,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'UsEr01',
+                    price: 525,
+                    created_at,
+                    updated_at,
+                },
+            ];
+
+            sut.items = items;
+
+            const result = await sut.search({
+                page: 1,
+                per_page: 2,
+                filter: 'user01',
+            });
+
+            expect(result).toStrictEqual({
+                items: [items[0], items[2]],
+                total: 3,
+                current_page: 1,
+                per_page: 2,
+                sort: null,
+                sort_dir: null,
+                filter: 'user01',
+            });
+        });
+
+        it('pagination and sorting must be apply', async () => {
+            const items = [
+                {
+                    id: randomUUID(),
+                    name: 'test04',
+                    price: 100,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'test02',
+                    price: 200,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'test01',
+                    price: 300,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'test05',
+                    price: 525,
+                    created_at,
+                    updated_at,
+                },
+                {
+                    id: randomUUID(),
+                    name: 'test03',
+                    price: 479,
+                    created_at,
+                    updated_at,
+                },
+            ];
+
+            sut.items = items;
+
+            let result = await sut.search({
+                page: 1,
+                per_page: 2,
+                sort: 'name',
+                sort_dir: 'asc',
+            });
+
+            expect(result).toStrictEqual({
+                items: [items[2], items[1]],
+                total: 5,
+                current_page: 1,
+                per_page: 2,
+                sort: 'name',
+                sort_dir: 'asc',
+                filter: null,
+            });
+
+            result = await sut.search({
+                page: 2,
+                per_page: 2,
+                sort: 'name',
+                sort_dir: 'asc',
+            });
+
+            expect(result).toStrictEqual({
+                items: [items[4], items[0]],
+                total: 5,
+                current_page: 2,
+                per_page: 2,
+                sort: 'name',
+                sort_dir: 'asc',
+                filter: null,
+            });
+        });
+    });
 });
