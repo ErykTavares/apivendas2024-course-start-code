@@ -42,7 +42,7 @@ export class ProductsInMemoryRepository
 
         if (product) {
             throw new ConflictError(
-                `Product with the same name (${name}) was found`,
+                `Name already in use on another product (${name})`,
             );
         }
     }
