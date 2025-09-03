@@ -1,3 +1,4 @@
+import { ConflictError } from '@/common/domain/errors/conflict-error';
 import { NotFoundError } from '@/common/domain/errors/not-found-error';
 import { InMemoryRepository } from '@/common/domain/repositories/in-memory.repository';
 import { ProductModel } from '@/products/domain/models/products.model';
@@ -13,13 +14,13 @@ export class ProductsInMemoryRepository
     sortableFields: string[] = ['name', 'created_at'];
 
     async findByName(name: string): Promise<ProductModel> {
-        const model = this.items.find(item => item.name === name);
+        const product = this.items.find(item => item.name === name);
 
-        if (!model) {
+        if (!product) {
             throw new NotFoundError(`Product with name ${name} not found`);
         }
 
-        return model;
+        return product;
     }
 
     async findAllByIds(productIds: ProductId[]): Promise<ProductModel[]> {
@@ -36,14 +37,32 @@ export class ProductsInMemoryRepository
         return existingProducts;
     }
 
-    conflictingNames(names: string): Promise<void> {
-        throw new Error('Method not implemented.');
+    async conflictingNames(name: string): Promise<void> {
+        const product = this.items.find(item => item.name === name);
+
+        if (product) {
+            throw new ConflictError(
+                `Product with the same name (${name}) was found`,
+            );
+        }
     }
 
-    protected applyFilter(
+    protected async applyFilter(
         items: ProductModel[],
         filter: string | null,
     ): Promise<ProductModel[]> {
-        throw new Error('Method not implemented.');
+        if (!filter) return items;
+
+        return items.filter(item =>
+            item.name.toLowerCase().includes(filter.toLowerCase()),
+        );
+    }
+
+    protected async applySort(
+        items: ProductModel[],
+        sort: string | null,
+        sort_dir: string | null,
+    ): Promise<ProductModel[]> {
+        return super.applySort(items, sort ?? 'created_at', sort_dir ?? 'desc');
     }
 }

@@ -1,0 +1,25 @@
+import { faker } from '@faker-js/faker';
+import { ProductModel } from '@/products/domain/models/products.model';
+import { randomUUID } from 'node:crypto';
+
+export const productsDataBuilder = (
+    props: Partial<ProductModel>,
+): ProductModel => {
+    return {
+        id: props.id ?? randomUUID(),
+        name: props.name ?? faker.commerce.productName(),
+        price:
+            props.price ??
+            Number(
+                faker.commerce.price({
+                    min: 100,
+                    max: 2000,
+                    dec: 2,
+                }),
+            ),
+        quantity: props.quantity ?? 10,
+        createdAt: props.createdAt ?? new Date(),
+        updatedAt: props.updatedAt ?? new Date(),
+        ...props,
+    };
+};
