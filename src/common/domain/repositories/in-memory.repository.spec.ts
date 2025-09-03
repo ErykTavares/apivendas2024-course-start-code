@@ -20,11 +20,9 @@ class StubInMemoryRepository extends InMemoryRepository<StubModelProps> {
         items: StubModelProps[],
         filter: string | null,
     ): Promise<StubModelProps[]> {
-        if (!filter) return Promise.resolve(items);
-        return Promise.resolve(
-            items.filter(item =>
-                item.name.toLowerCase().includes(filter.toLowerCase()),
-            ),
+        if (!filter) return items;
+        return items.filter(item =>
+            item.name.toLowerCase().includes(filter.toLowerCase()),
         );
     }
 }
