@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 
 export class Product implements ProductModel {
+    created_at: Date;
+    updated_at: Date;
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

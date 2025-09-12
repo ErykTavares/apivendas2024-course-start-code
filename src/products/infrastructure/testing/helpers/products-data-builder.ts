@@ -3,7 +3,7 @@ import { ProductModel } from '@/products/domain/models/products.model';
 import { randomUUID } from 'node:crypto';
 
 export const productsDataBuilder = (
-    props: Partial<ProductModel>,
+    props: Partial<ProductModel> = {},
 ): ProductModel => {
     return {
         id: props.id ?? randomUUID(),
@@ -18,8 +18,7 @@ export const productsDataBuilder = (
                 }),
             ),
         quantity: props.quantity ?? 10,
-        createdAt: props.createdAt ?? new Date(),
-        updatedAt: props.updatedAt ?? new Date(),
-        ...props,
+        created_at: props.created_at ?? new Date(),
+        updated_at: props.updated_at ?? new Date(),
     };
 };
