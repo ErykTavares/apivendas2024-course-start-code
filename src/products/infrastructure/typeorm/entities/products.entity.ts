@@ -2,9 +2,12 @@ import { ProductModel } from '@/products/domain/models/products.model';
 import {
     Column,
     CreateDateColumn,
+    Entity,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+
+@Entity('products')
 
 export class Product implements ProductModel {
     created_at: Date;
