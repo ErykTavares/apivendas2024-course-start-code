@@ -2,19 +2,25 @@
     "name": "temp",
     "version": "1.0.0",
     "main": "index.js",
+    "license": "ISC",
     "scripts": {
         "dev": "npx dotenv-cli -e .env -- ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/common/infrastructure/http/server.ts",
         "lint": "eslint .",
-        "teste": "npx dotenv-cli -e .env.test -- jest --runInBand",
-        "prettier": "npx prettier --config .prettierrc 'src//**/*.{js,jsx,ts,tsx,json}' --write",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier . --write",
+        "teste": "dotenv-cli -e .env.test -- jest --runInBand",
         "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "description": "",
+    "prettier": {
+        "semi": true,
+        "tabWidth": 4,
+        "trailingComma": "all",
+        "singleQuote": true,
+        "printWidth": 80,
+        "arrowParens": "avoid",
+        "endOfLine": "auto"
+    },
     "dependencies": {
-        "@types/cors": "^2.8.17",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "dotenv-cli": "^8.0.0",
@@ -22,7 +28,6 @@
         "express-async-errors": "^3.1.1",
         "pg": "^8.12.0",
         "reflect-metadata": "^0.2.2",
-        "rg": "^0.0.2",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.1",
         "typeorm": "^0.3.23",
@@ -32,6 +37,7 @@
         "@eslint/js": "^9.9.0",
         "@faker-js/faker": "^9.9.0",
         "@jest/globals": "^30.0.4",
+        "@types/cors": "^2.8.17",
         "@types/express": "^4.17.21",
         "@types/jest": "^30.0.0",
         "@types/node": "^22.3.0",
@@ -42,11 +48,11 @@
         "eslint-plugin-prettier": "^5.2.1",
         "globals": "^15.9.0",
         "jest": "^30.0.5",
-        "prettier": "3.3.3",
+        "prettier": "^3.3.3",
         "ts-jest": "^29.4.0",
         "ts-node-dev": "^2.0.0",
         "tsconfig-paths": "^4.2.0",
-        "typescript": "^5.5.4",
+        "typescript": "^5.9.3",
         "typescript-eslint": "^8.1.0"
     }
 }

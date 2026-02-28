@@ -7,7 +7,8 @@ export default [
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
     languageOptions: {
-      globals: globals.browser,
+      globals: globals.node,
+      sourceType: 'module',
     },
   },
 
@@ -23,8 +24,6 @@ export default [
 
   {
     rules: {
-      // TypeScript specific
-      '@typescript-eslint/interface-name-prefix': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
@@ -33,12 +32,11 @@ export default [
       '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { argsIgnorePattern: '^_' },
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
-
-      // JS specific
       'no-unused-vars': 'off',
       'no-undef': 'off',
+      'prettier/prettier': 'off',
     },
   },
 ]
