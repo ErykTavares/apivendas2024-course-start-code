@@ -76,7 +76,7 @@ describe('ProductsInMemoryRepository Unit Tests', () => {
             sut.items.push(...items);
 
             const spy = jest.spyOn(sut.items, 'filter' as any);
-            let result = await sut['applyFilter'](sut.items, 'test');
+            const result = await sut['applyFilter'](sut.items, 'test');
 
             expect(spy).toHaveBeenCalledTimes(1);
             expect(result).toStrictEqual([items[0], items[1]]);
