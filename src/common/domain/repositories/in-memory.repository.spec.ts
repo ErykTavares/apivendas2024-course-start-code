@@ -295,7 +295,7 @@ describe('InMemoryRepository Unit Tests', () => {
 
             sut.items = items;
 
-            let result = await sut.search({});
+            const result = await sut.search({});
 
             expect(result).toStrictEqual({
                 items: Array(15).fill(model),
