@@ -1,16 +1,17 @@
-import { pathsToModuleNameMapper } from 'ts-jest';
-import { compilerOptions } from './tsconfig.json';
+/* eslint-disable @typescript-eslint/no-require-imports */
+const { pathsToModuleNameMapper } = require('ts-jest');
+const { compilerOptions } = require('./tsconfig.json');
 
-export default {
+module.exports = {
     moduleFileExtensions: ['js', 'ts', 'json'],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
         prefix: '<rootDir>/',
     }),
-    testRegex: '.*\\.spec\\.ts$',
+    testRegex: String.raw`.*\.int\.spec\.ts$`,
     transform: {
         '^.+\\.(t|j)s$': 'ts-jest',
     },
     collectCoverageFrom: ['**/*.(t|j)s'],
-    coverageDirectory: '../coverage',
+    coverageDirectory: 'coverage/integration',
     testEnvironment: 'node',
 };

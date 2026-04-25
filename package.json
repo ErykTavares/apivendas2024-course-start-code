@@ -9,7 +9,10 @@
         "lint:fix": "eslint . --fix",
         "format": "prettier . --write",
         "teste": "dotenv-cli -e .env.test -- jest --runInBand",
-        "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
+        "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+        "pretest:int": "docker run --name testsdb -e POSTGRES_PASSWORD=postgres -p 5433:5432 -d postgres",
+        "test:int": "npx dotenv-cli -e .env.test -- jest --runInBand --config ./jest.int.config.cjs",
+        "posttest:int": "docker stop testsdb && docker rm testsdb"
     },
     "prettier": {
         "semi": true,
@@ -49,7 +52,7 @@
         "globals": "^15.9.0",
         "jest": "^30.0.5",
         "prettier": "^3.3.3",
-        "ts-jest": "^29.4.0",
+        "ts-jest": "^29.4.9",
         "ts-node-dev": "^2.0.0",
         "tsconfig-paths": "^4.2.0",
         "typescript": "^5.9.3",
