@@ -30,11 +30,13 @@ export class ProductsTypeormRepository implements ProductsRepository {
     conflictingNames(names: string): Promise<void> {
         throw new Error('Method not implemented.');
     }
+
     create(props: CreateProductProps): ProductModel {
-        throw new Error('Method not implemented.');
+        return this.productsRepository.create(props);
     }
-    insert(modal: ProductModel): Promise<ProductModel> {
-        throw new Error('Method not implemented.');
+
+    async insert(modal: ProductModel): Promise<ProductModel> {
+        return this.productsRepository.save(modal);
     }
 
     async findById(id: string): Promise<ProductModel> {
