@@ -112,4 +112,26 @@ describe('ProductsTypeormRepository Integration Tests', () => {
             expect(result).toBeNull();
         });
     });
+
+    describe('findByName', () => {
+        it('should generate an error when the product is not found', async () => {
+            const name = 'Product 1';
+
+            await expect(ormRepository.findByName(name)).rejects.toThrow(
+                new NotFoundError(`Product not found using name ${name}`),
+            );
+        });
+
+        it('should find a product by name', async () => {
+            const data = productsDataBuilder({
+                name: 'Product 1',
+            });
+            const product = testDataSource.manager.create(Product, data);
+
+            await testDataSource.manager.save(product);
+            const res = await ormRepository.findByName(data.name);
+
+            expect(res.name).toEqual('Product 1');
+        });
+    });
 });
