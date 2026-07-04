@@ -88,4 +88,28 @@ describe('ProductsTypeormRepository Integration Tests', () => {
             expect(res.name).toEqual('Product 1 Updated');
         });
     });
+
+    describe('delete', () => {
+        it('should generate an error when the product is not found', async () => {
+            const id = randomUUID();
+
+            await expect(ormRepository.delete(id)).rejects.toThrow(
+                new NotFoundError(`Product not found using ID ${id}`),
+            );
+        });
+
+        it('should delete a product', async () => {
+            const data = productsDataBuilder({});
+            const product = testDataSource.manager.create(Product, data);
+
+            await testDataSource.manager.save(product);
+            await ormRepository.delete(data.id);
+
+            const result = await testDataSource.manager.findOneBy(Product, {
+                id: data.id,
+            });
+
+            expect(result).toBeNull();
+        });
+    });
 });
