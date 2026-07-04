@@ -1,5 +1,8 @@
+import { createRequire } from 'node:module';
 import { pathsToModuleNameMapper } from 'ts-jest';
-import { compilerOptions } from './tsconfig.json';
+
+const require = createRequire(import.meta.url);
+const { compilerOptions } = require('./tsconfig.json');
 
 export default {
     moduleFileExtensions: ['js', 'ts', 'json'],
